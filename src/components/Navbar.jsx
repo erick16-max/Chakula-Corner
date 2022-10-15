@@ -4,16 +4,9 @@ import {BsSearch} from "react-icons/bs";
 import { appContext } from "../Context";
 
 const Navbar = () => {
-  const [searchText, setSearchText] = useState("");
-  const {setSearchTerm} = useContext(appContext)
+  const {setSearchTerm, searchTerm} = useContext(appContext)
 
-  const handleSearchForm = (e) => {
-    e.preventDefault();
-    if(searchText){
-      setSearchTerm(searchText)
-    }
-    
-  }
+  
     return ( 
       <nav>
         <div className="logo">
@@ -23,10 +16,9 @@ const Navbar = () => {
             <h3>CHAKULA <br /> <span style={{fontSize: "18px",}}>Corner</span></h3>
           </div>
         </div>
-        <form className="search" onSubmit={handleSearchForm}>
-        <input type="text" value={searchText} onChange={e => setSearchText(e.target.value)} placeholder="Search.." className="search-input"/>
-        <div className="search-btn"><button type="submit" ><BsSearch/></button> </div>
-        </form>
+        <div className="nosubmit">
+          <input className="nosubmit" type="search" placeholder="Search..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)}/>
+        </div>
       </nav>
     
      );

@@ -1,7 +1,7 @@
 import { appContext } from "../Context";
-import { useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 import { TiTick } from "react-icons/ti";
-import {FaYoutube, FaBuffer} from "react-icons/fa";
+import {FaYoutube} from "react-icons/fa";
 
 
 
@@ -28,7 +28,7 @@ const RecipeModal = ({closeModal}) => {
     mealSelected.strMeasure17,mealSelected.strMeasure18, mealSelected.strMeasure19,mealSelected.strMeasure20)
 
 
- console.log(mealSelected)
+//  console.log(mealSelected)
 
     function handleCloseOuterModal(event) {
         const isOutside = !event.target.closest('.modal-inner');
@@ -49,8 +49,8 @@ const RecipeModal = ({closeModal}) => {
                     <p><b>Type:</b> <span>{mealSelected.strCategory || "indigenous"} </span></p>
                     <p><b>Origin:</b> <span>{mealSelected.strArea || "indigenous"}</span></p>
                     <div className="recipe-icons">
-                    <a href={mealSelected.strYoutube} target="_blank"><div className="youtube-icon"><FaYoutube/></div></a>
-                    <a href={mealSelected.strYoutube} target="_blank"><div className="youtube-watch">Watch on <br/>Youtube</div></a>
+                    <a href={mealSelected.strYoutube} rel="noreferrer" target="_blank"><div className="youtube-icon"><FaYoutube/></div></a>
+                    <a href={mealSelected.strYoutube} rel="noreferrer" target="_blank"><div className="youtube-watch">Watch on <br/>Youtube</div></a>
                     </div>
                 </div>
               </div>
@@ -58,7 +58,7 @@ const RecipeModal = ({closeModal}) => {
               <div className="recipe-ingredients">
                   <h4>{mealSelected.strMeal} Meal Ingredients and Measures</h4>
                   {
-                    ingredientsArray.map((ingredient, index) => {
+                    ingredientsArray.filter((ingredient, index) => {
                       if(ingredient !== "" && ingredient !== null && ingredient !== undefined) {
                         return(
                           <div key={index} className="recipe-ingredients-list">
