@@ -5,12 +5,8 @@ import { appContext } from "../Context";
 
 const MealsContainer = () => {
 
-    const {meals, modalOuter, handleRecipeButtonClick, addToFavorites,favoritesFromLocal} = useContext(appContext);
-    
-   
-    
-    
-    
+    const {meals, modalOuter, handleRecipeButtonClick, addToFavorites} = useContext(appContext);
+    const storedMeals = JSON.parse(localStorage.getItem("meals"))
 
     function closeModal() {
         modalOuter.classList.remove('open');
@@ -19,12 +15,16 @@ const MealsContainer = () => {
  
     const recipeButtons = document.querySelectorAll('.recipeButton');
     recipeButtons.forEach(button => button.addEventListener('click', handleRecipeButtonClick))
+
+    
+    
+    
     
         return ( 
             <div className="meals-container">
             {    
                
-                      meals.map(meal => {
+                      storedMeals.map(meal => {
                          return(
                              <div className="card" key={meal.idMeal} id={meal.idMeal}>
                              <img src={meal.strMealThumb} alt="" />
@@ -34,12 +34,12 @@ const MealsContainer = () => {
                                          <br/><span>{meal.strTags || meal.strCategory}</span>
                                      </p>
                                      <div style={{marginTop:"10px", width:"120px"}}>
-                                         <button id={meal.idMeal} className="recipeButton" onClick={() => addToFavorites(meal.idMeal)}>
+                                         <button id={meal.idMeal} className="recipeButton" >
                                              View Recipe <span className="eye"><FaEye/></span>
                                          </button>
                                          
                                      </div>
-                                     <div className="favorite"
+                                     <div className={meal.favorite === true?"favorite add":"favorite"}
                                       id={meal.idMeal} onClick={() => addToFavorites(meal.idMeal)}>
                                      <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 93.3 80.6"><path d="M86.2 7c-9.4-9.4-24.6-9.4-33.9 0l-5.7 5.7L41 7C31.6-2.3 16.4-2.3 7 7c-9.3 9.4-9.3 24.6 0 34l5.7 5.7 33.9 33.9 33.9-33.9 5.7-5.7c9.4-9.4 9.4-24.6 0-34z"/></svg>
                                      </div>

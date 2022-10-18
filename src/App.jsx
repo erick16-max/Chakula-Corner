@@ -6,9 +6,12 @@ import { appContext } from "./Context";
 
 
 
+
+
 function App() {
   const {meals, favoritesFromLocal, error} = useContext(appContext);
-  console.log(error);
+  //console.log(JSON.parse(localStorage.getItem("meals")))
+ 
   
   
   return (
@@ -17,9 +20,10 @@ function App() {
       if(error){
         <h4>{error}</h4>
       }
-      {favoritesFromLocal.length === 0 || error ? "" : <Favorite/>}
+      {<Favorite/>}
       {meals && <Meals/>}
-      
+
+    
     </div>
   );
 }

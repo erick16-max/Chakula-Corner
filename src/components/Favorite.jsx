@@ -1,9 +1,10 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { appContext } from "../Context";
 
 const Favorite = () => {
-    const {favoritesFromLocal:favorites} = useContext(appContext);
-    console.log(favorites)
+    const storedMeals = JSON.parse(localStorage.getItem("meals"))
+    const favorites = storedMeals.filter(meal => meal.favorite === true)
+    
     return ( 
         <div className="favorite-meals">
             <h4>Favorite meals</h4>

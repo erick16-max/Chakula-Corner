@@ -17,7 +17,7 @@ const AppProvider = ({children}) => {
 
     const mealsUrl = "https://www.themealdb.com/api/json/v1/1/search.php?s=";
     const randomMealUrl = "https://www.themealdb.com/api/json/v1/1/random.php"
-    const favoritesFromLocal = JSON.parse(localStorage.getItem("favorites"))
+    const storedMeals = JSON.parse(localStorage.getItem("meals"))
 
 
 
@@ -29,7 +29,12 @@ const AppProvider = ({children}) => {
                 throw Error("Could Not Load Meals.")
             }
             const {meals} = await response.json();
-            setMeals(meals);
+            const updatedMeal =meals.map(meal => {
+                meal["favorite"] = false;
+                setMeals([...meals]);
+            })
+            
+            
             meals ? setIsLoading(false) : setIsLoading(true);
             //console.log(meals)
             
@@ -52,31 +57,24 @@ const AppProvider = ({children}) => {
       }
 
     const addToFavorites =idMeal => {
-        const mealExist = favorites.find(meal => meal.idMeal === idMeal)
-        if(mealExist){
-            const updatedFavorite = favorites.filter(meal => meal.idMeal !== idMeal)
-
-            setFavorites(updatedFavorite)
-            localStorage.setItem("favorites", JSON.stringify(updatedFavorite))
-            favoriteButtons.forEach(btn => {
-                if(btn.id === idMeal){
-                    localStorage.setItem("favorites", JSON.stringify(updatedFavorite))
-                    btn.classList.remove("add")
-                }
-            })
+       const favoriteMeal = meals.find(meal => meal.idMeal === idMeal)
+       if(favoriteMeal.favorite === false){
+            favoriteMeal.favorite = true
+            const updatedMeal = [...meals]
+           
+            localStorage.setItem("meals", JSON.stringify(updatedMeal))
+            setMeals(updatedMeal)
             
-        }else{
-            const mealToAdd = meals.find(meal => meal.idMeal === idMeal)
-            mealToAdd['isFavourite'] = true
-            const updatedFavorite = [...favorites, mealToAdd]
-            setFavorites(updatedFavorite)
-            localStorage.setItem("favorites", JSON.stringify(updatedFavorite))
-            favoriteButtons.forEach(btn => {
-                if(btn.id === idMeal){
-                    btn.classList.add("add")
-                }
-            })
-        }
+       }else{
+            favoriteMeal.favorite = false
+            const updatedMeal = [...meals]
+            console.log(updatedMeal)
+            localStorage.setItem("meals", JSON.stringify(updatedMeal))
+            setMeals(updatedMeal)
+        
+       }
+       
+        
     }
 
     return ( 
@@ -85,7 +83,7 @@ const AppProvider = ({children}) => {
                 meals, setOpenModal, openModal,
                  modalOuter,handleRecipeButtonClick, 
                  mealSelected, setSearchTerm,error,
-                 searchTerm, isLoading, setIsLoading, addToFavorites,favoritesFromLocal
+                 searchTerm, isLoading, setIsLoading, storedMeals, addToFavorites
                 }
             }>
                 {children}
